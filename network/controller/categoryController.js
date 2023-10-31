@@ -18,6 +18,14 @@ const CategoryController = {
       console.log(error);
     }
   },
+  deleteById: async (req, res) => {
+    try {
+      const event = await Event.findByIdAndDelete(req.params.id);
+      res.json(event);
+    } catch (error) {
+      console.log(error);
+    }
+  },
   add: async (req, res) => {
     try {
       const category = new Category({

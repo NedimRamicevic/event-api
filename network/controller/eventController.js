@@ -18,7 +18,14 @@ const EventController = {
       console.log(error);
     }
   },
-
+  deleteById: async (req, res) => {
+    try {
+      const event = await Event.findByIdAndDelete(req.params.id);
+      res.json(event);
+    } catch (error) {
+      console.log(error);
+    }
+  },
   createEvent: async (req, res) => {
     try {
       const event = new Event({
