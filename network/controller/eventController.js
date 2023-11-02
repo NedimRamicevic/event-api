@@ -9,7 +9,14 @@ const EventController = {
       console.log(error);
     }
   },
-
+  getById: async (req, res) => {
+    try {
+      const event = await Event.findOne({ _id: req.params.id });
+      res.json(event);
+    } catch (error) {
+      console.log(error);
+    }
+  },
   getByName: async (req, res) => {
     try {
       const event = await Event.findOne({ name: req.params.name });
@@ -20,7 +27,7 @@ const EventController = {
   },
   deleteById: async (req, res) => {
     try {
-      const event = await Event.findByIdAndDelete(req.params.id);
+      const event = await Event.deleteOne({ _id: req.params.id });
       res.json(event);
     } catch (error) {
       console.log(error);
