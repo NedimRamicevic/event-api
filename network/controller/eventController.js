@@ -1,4 +1,5 @@
 const { Event } = require("../models/Event.js");
+const { default: mongoose } = require("mongoose");
 const { Category } = require("../models/Category.js");
 const EventController = {
   getAll: async (req, res) => {
@@ -36,11 +37,15 @@ const EventController = {
   createEvent: async (req, res) => {
     try {
       const event = new Event({
+        _id: new mongoose.Types.ObjectId(),
         image: req.body.image,
-        name: req.body.name,
+        name: req.body.eventName,
         description: req.body.description,
-        date: req.body.date,
-        location: req.body.location,
+        startDate: req.body.ticketSaleStartDate,
+        endDate: req.body.ticketSaleEndDate,
+        eventDate: req.body.eventDate,
+        city: req.body.city,
+        venue: req.body.venue,
         category: req.body.category,
       });
       const newEvent = await event.save();
@@ -52,11 +57,15 @@ const EventController = {
   add: async (req, res) => {
     try {
       const event = new Event({
+        _id: new mongoose.Types.ObjectId(),
         image: req.body.image,
-        name: req.body.name,
+        name: req.body.eventName,
         description: req.body.description,
-        date: req.body.date,
-        location: req.body.location,
+        startDate: req.body.ticketSaleStartDate,
+        endDate: req.body.ticketSaleEndDate,
+        eventDate: req.body.eventDate,
+        city: req.body.city,
+        venue: req.body.venue,
         category: req.body.category,
       });
       const newEvent = await event.save();
