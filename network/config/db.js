@@ -1,10 +1,9 @@
 const { mongoose } = require("mongoose");
 
-const MONGO_URI =
-  "mongodb+srv://mrramicevic:1234@cluster0.dkckweg.mongodb.net/eventApp";
+const MONGO_URL = process.env.MONGO_URL;
 
 const env = {
-  db: MONGO_URI,
+  db: MONGO_URL,
 };
 const connectDB = async () => {
   try {
