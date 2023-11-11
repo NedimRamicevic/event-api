@@ -3,7 +3,6 @@ const { default: mongoose } = require("mongoose");
 const EventSchema = new mongoose.Schema(
   {
     _id: mongoose.Schema.Types.ObjectId,
-    image: String,
     name: String,
     description: String,
     startDate: String,
@@ -11,8 +10,13 @@ const EventSchema = new mongoose.Schema(
     eventDate: String,
     venue: String,
     city: String,
-
     category: String,
+
+    image: {
+      filename: String,
+      contentType: String,
+      data: Buffer,
+    },
   },
   {
     timestamps: true,
