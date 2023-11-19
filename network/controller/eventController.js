@@ -109,7 +109,6 @@ const EventController = {
   add: async (req, res) => {
     try {
       const { image, ...otherFormData } = req.body;
-      console.log("Received form data:", req.body);
 
       if (!req.file) {
         return res
@@ -124,6 +123,7 @@ const EventController = {
       const event = new Event({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.eventName,
+        ticketCount: 40,
         image: {
           filename: originalname,
           contentType: mimetype,
@@ -136,6 +136,28 @@ const EventController = {
       res.json(newEvent);
     } catch (error) {
       console.error("Error adding event:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+
+  updateTickets: async (req, res) => {
+    try {
+      const eventId = req.params.id;
+      const updatedEvent = await Event.findOneAndUpdate(
+        { _id: eventId },
+        {
+          ticket: [...ticket, req.body.ticket],
+        },
+        { new: true } // To return the updated document
+      );
+
+      if (!updatedEvent) {
+        return res.status(404).json({ error: "Event not found" });
+      }
+
+      res.json(updatedEvent);
+    } catch (error) {
+      console.error("Error updating event city:", error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },

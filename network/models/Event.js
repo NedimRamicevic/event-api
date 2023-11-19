@@ -8,9 +8,11 @@ const EventSchema = new mongoose.Schema(
     startDate: String,
     endDate: String,
     eventDate: String,
+    eventHours: String,
     venue: String,
     city: String,
     category: String,
+    ticketCount: Number,
 
     image: {
       filename: String,
