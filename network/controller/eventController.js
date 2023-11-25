@@ -188,7 +188,7 @@ const EventController = {
           _id: new mongoose.Types.ObjectId(),
           name: eventData.eventName,
           ticketCount: 40,
-          image: cloudinaryURL, // Update this with the URL from your image upload
+          image: `https://res.cloudinary.com/${cloud_name}/image/upload/${public_id}`, // Update this with the URL from your image upload
           category: existingCategory.name, // Use the category ID
           ...eventData,
         });
