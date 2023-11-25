@@ -16,7 +16,7 @@ const storage = new CloudinaryStorage({
   params: {
     folder: "some_folder_name",
     format: async (req, file) => "png",
-    public_id: (req, file) => "computed-filename-using-request",
+    public_id: (req, file) => req.file.filename.split(".")[0],
   },
 });
 // const storage = multer.memoryStorage();
