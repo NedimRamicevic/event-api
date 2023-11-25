@@ -189,7 +189,7 @@ const EventController = {
           name: eventData.eventName,
           ticketCount: 40,
           image: cloudinaryURL, // Update this with the URL from your image upload
-          category: existingCategory._id, // Use the category ID
+          category: existingCategory.name, // Use the category ID
           ...eventData,
         });
 
