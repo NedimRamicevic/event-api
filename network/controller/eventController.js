@@ -13,12 +13,17 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: {
-    folder: "some_folder_name",
-    format: async (req, file) => "png",
-    public_id: (req, file) => req.file.filename.split(".")[0],
+  params: async (req, file) => {
+    const timestamp = Date.now();
+    const uniqueFilename = `image_${timestamp}`;
+    return {
+      folder: "some_folder_name",
+      format: "png",
+      public_id: uniqueFilename,
+    };
   },
 });
+
 // const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
