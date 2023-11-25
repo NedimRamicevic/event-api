@@ -8,7 +8,8 @@ const upload = multer({ storage: storage });
 const router = express.Router();
 
 router.delete("/event/:id", EventController.deleteById);
-router.post("/event", upload.single("image"), EventController.add);
+// router.post("/event", upload.single("image"), EventController.add);
+router.post("/event", EventController.add);
 router.get("/events", EventController.getAll);
 router.get("/event/:id", EventController.getById);
 router.get("/events/:eventId/image", EventController.getImage);
