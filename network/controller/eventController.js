@@ -175,12 +175,22 @@ const EventController = {
 
         console.log("Image data:", req.file);
 
+        // Check if the category exists or create a new one
+        const { category, ...eventData } = otherFormData;
+        let existingCategory = await Category.findOne({ name: category });
+
+        if (!existingCategory) {
+          // If category doesn't exist, create a new category
+          existingCategory = await Category.create({ name: category });
+        }
+
         const event = new Event({
           _id: new mongoose.Types.ObjectId(),
-          name: req.body.eventName,
+          name: eventData.eventName,
           ticketCount: 40,
-          image: cloudinaryURL,
-          ...otherFormData,
+          image: cloudinaryURL, // Update this with the URL from your image upload
+          category: existingCategory._id, // Use the category ID
+          ...eventData,
         });
 
         const newEvent = await event.save();
