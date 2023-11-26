@@ -206,24 +206,29 @@ const EventController = {
       }
     },
   ],
-  updateTickets: async (req, res) => {
+  sellTicket: async (req, res) => {
     try {
       const eventId = req.params.id;
-      const updatedEvent = await Event.findOneAndUpdate(
-        { _id: eventId },
-        {
-          ticket: [...ticket, req.body.ticket],
-        },
-        { new: true } // To return the updated document
-      );
+      const reductionQuantity = req.body.reductionQuantity || 1; // Default to reducing by 1 if not provided
 
-      if (!updatedEvent) {
+      // Check if the event exists
+      const event = await Event.findById(eventId);
+      if (!event) {
         return res.status(404).json({ error: "Event not found" });
       }
 
-      res.json(updatedEvent);
+      // Ensure the reduction quantity is valid
+      if (reductionQuantity <= 0 || reductionQuantity > event.ticketCount) {
+        return res.status(400).json({ error: "Invalid reduction quantity" });
+      }
+
+      // Update ticket count based on the reduction quantity
+      event.ticketCount -= reductionQuantity;
+      await event.save(); // Save the updated event
+
+      res.json(event);
     } catch (error) {
-      console.error("Error updating event city:", error);
+      console.error("Error selling ticket:", error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
