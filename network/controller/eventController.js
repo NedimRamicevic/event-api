@@ -208,8 +208,8 @@ const EventController = {
   ],
   sellTicket: async (req, res) => {
     try {
-      const eventId = req.params.id;
-      const reductionQuantity = req.body.reductionQuantity || 1; // Default to reducing by 1 if not provided
+      const eventId = req.body.data._id;
+      const ticketQuantity = req.body.data.ticketCount; // Default to reducing by 1 if not provided
 
       // Check if the event exists
       const event = await Event.findById(eventId);
@@ -218,17 +218,17 @@ const EventController = {
       }
 
       // Ensure the reduction quantity is valid
-      if (reductionQuantity <= 0 || reductionQuantity > event.ticketCount) {
+      if (ticketQuantity < 0) {
         return res.status(400).json({ error: "Invalid reduction quantity" });
       }
 
       // Update ticket count based on the reduction quantity
-      event.ticketCount -= reductionQuantity;
+      event.ticketCount = ticketQuantity;
       await event.save(); // Save the updated event
 
       res.json(event);
     } catch (error) {
-      console.error("Error selling ticket:", error);
+      console.error("Hatali isler ytapiyorsun:", error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
