@@ -171,7 +171,7 @@ const EventController = {
     async (req, res) => {
       try {
         const { image, ...otherFormData } = req.body;
-
+        console.log("Received data:", otherFormData);
         if (!req.file) {
           return res
             .status(400)
