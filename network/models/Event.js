@@ -38,7 +38,7 @@ const EventSchema = new mongoose.Schema(
     startTime: String,
     endTime: String,
     eventDate: String,
-    artists: String,
+    artist: String,
     venue: String,
     city: String,
     category: String,
