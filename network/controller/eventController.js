@@ -189,6 +189,23 @@ const EventController = {
           existingCategory = await Category.create({ name: category });
         }
 
+        // check if the venue exists or create a new one
+        const { venue } = eventData;
+        let existingVenue = await Venue.findOne({ name: venue });
+
+        if (!existingVenue) {
+          // If venue doesn't exist, create a new venue
+          existingVenue = await Venue.create({ name: venue, city: city });
+        }
+
+        // check if the artist exists or create a new one
+        const { artist } = eventData;
+        let existingArtist = await Artist.findOne({ name: artist });
+
+        if (!existingArtist) {
+          // If artist doesn't exist, create a new artist
+          existingArtist = await Artist.create({ name: artist });
+        }
         const event = new Event({
           _id: new mongoose.Types.ObjectId(),
           name: eventData.eventName,
