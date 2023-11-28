@@ -180,6 +180,9 @@ const EventController = {
           // If artist doesn't exist, create a new artist
           existingArtist = await Artist.create({ name: artist });
         }
+         const cloud_name = "dn339ykdp";
+         const public_id = req.file.filename;
+         const cloudinaryURL = `https://res.cloudinary.com/${cloud_name}/image/upload/${public_id}`;
         const event = new Event({
           name: otherFormData.eventName,
           ticketCount: 40,
@@ -187,7 +190,7 @@ const EventController = {
           venue: venue,
           city: city,
           artist: artist,
-          image: `https://res.cloudinary.com/${cloudName}/image/upload/${public_id}`, // Update this with the URL from your image upload
+          image: cloudinaryURL, 
           ...otherFormData,
         });
         console.log("Event data:", event);
