@@ -18,23 +18,6 @@ const ArtistController = {
       console.log(error);
     }
   },
-  deleteById: async (req, res) => {
-    try {
-      const event = await Event.findByIdAndDelete(req.params.id);
-      res.json(event);
-    } catch (error) {
-      console.log(error);
-    }
-  },
-  add: async (req, res) => {
-    try {
-      const artist = new Artist({
-        name: req.body.name,
-      });
-      const newArtist = await artist.save();
-      res.json(newArtist);
-    } catch (error) {
-      console.log(error);
-    }
-  },
 };
+
+module.exports = { ArtistController };

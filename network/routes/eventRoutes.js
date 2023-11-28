@@ -23,9 +23,7 @@ router.get("/category/:id", CategoryController.getByName);
 router.delete("category/:id", CategoryController.deleteById);
 
 router.get("/venues", VenueController.getAll);
-router.get("/venue/:id", VenueController.getById);
 
 router.get("/artists", ArtistController.getAll);
-router.get("/artist/:id", ArtistController.getById);
 
 module.exports = router;
