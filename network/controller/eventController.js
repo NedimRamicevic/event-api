@@ -1,6 +1,8 @@
 const { Event } = require("../models/Event.js");
 const { default: mongoose } = require("mongoose");
 const { Category } = require("../models/Category.js");
+const { Venue } = require("../models/Venue.js");
+const { Artist } = require("../models/Artist.js");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
@@ -24,6 +26,8 @@ const storage = new CloudinaryStorage({
   },
 });
 
+const cloudName = cloudinary.config().cloud_name;
+const public_id = storage.params().public_id;
 // const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
@@ -137,41 +141,14 @@ const EventController = {
   //     res.status(500).json({ error: "Internal Server Error" });
   //   }
   // },
-  createEvent: [
-    upload.single("image"),
-    async (req, res) => {
-      console.log("Received file:", req.file);
-      console.log("Received form data:", req.body);
-      try {
-        const cloud_name = "dn339ykdp";
-        const public_id = req.file.filename.split(".")[0];
-        const cloudinaryURL = `https://res.cloudinary.com/${cloud_name}/image/upload/${public_id}`;
-        const event = new Event({
-          _id: new mongoose.Types.ObjectId(),
-          name: req.body.eventName,
-          description: req.body.description,
-          startDate: req.body.ticketSaleStartDate,
-          endDate: req.body.ticketSaleEndDate,
-          eventDate: req.body.eventDate,
-          city: req.body.city,
-          venue: req.body.venue,
-          category: req.body.category,
-          image: cloudinaryURL,
-        });
-        const newEvent = await event.save();
-        res.json(newEvent);
-      } catch (error) {
-        console.log(error);
-      }
-    },
-  ],
 
   add: [
     upload.single("image"),
     async (req, res) => {
       try {
-        const { image, ...otherFormData } = req.body;
-        console.log("Received data:", otherFormData);
+        const { image, category, venue, city, artist, ...otherFormData } =
+          req.body;
+        console.log("Received data:", req.body);
         if (!req.file) {
           return res
             .status(400)
@@ -181,7 +158,6 @@ const EventController = {
         console.log("Image data:", req.file);
 
         // Check if the category exists or create a new one
-        const { category, ...eventData } = otherFormData;
         let existingCategory = await Category.findOne({ name: category });
 
         if (!existingCategory) {
@@ -190,7 +166,6 @@ const EventController = {
         }
 
         // check if the venue exists or create a new one
-        const { venue } = eventData;
         let existingVenue = await Venue.findOne({ name: venue });
 
         if (!existingVenue) {
@@ -199,7 +174,6 @@ const EventController = {
         }
 
         // check if the artist exists or create a new one
-        const { artist } = eventData;
         let existingArtist = await Artist.findOne({ name: artist });
 
         if (!existingArtist) {
@@ -207,13 +181,16 @@ const EventController = {
           existingArtist = await Artist.create({ name: artist });
         }
         const event = new Event({
-          _id: new mongoose.Types.ObjectId(),
-          name: eventData.eventName,
+          name: otherFormData.eventName,
           ticketCount: 40,
-          image: `https://res.cloudinary.com/${cloud_name}/image/upload/${public_id}`, // Update this with the URL from your image upload
-          ...eventData,
+          category: category,
+          venue: venue,
+          city: city,
+          artist: artist,
+          image: `https://res.cloudinary.com/${cloudName}/image/upload/${public_id}`, // Update this with the URL from your image upload
+          ...otherFormData,
         });
-
+        console.log("Event data:", event);
         const newEvent = await event.save();
         res.json(newEvent);
       } catch (error) {

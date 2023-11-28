@@ -32,7 +32,6 @@ const { default: mongoose } = require("mongoose");
 
 const EventSchema = new mongoose.Schema(
   {
-    _id: mongoose.Schema.Types.ObjectId,
     name: String,
     description: String,
     startTime: String,

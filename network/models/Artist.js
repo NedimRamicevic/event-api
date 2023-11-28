@@ -4,7 +4,6 @@ const { default: mongoose } = require("mongoose");
 
 const ArtistSchema = new mongoose.Schema(
   {
-    _id: mongoose.Schema.Types.ObjectId,
     name: String,
   },
   {
