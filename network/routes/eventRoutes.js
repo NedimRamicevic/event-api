@@ -1,6 +1,8 @@
 const express = require("express");
 const { EventController } = require("../controller/eventController");
 const { CategoryController } = require("../controller/categoryController");
+const { ArtistController } = require("../controller/artistController");
+const { VenueController } = require("../controller/venueController");
 const multer = require("multer");
 
 const storage = multer.memoryStorage();
@@ -19,5 +21,11 @@ router.post("/category", CategoryController.add);
 router.get("/categories", CategoryController.getAll);
 router.get("/category/:id", CategoryController.getByName);
 router.delete("category/:id", CategoryController.deleteById);
+
+router.get("/venues", VenueController.getAll);
+router.get("/venue/:id", VenueController.getById);
+
+router.get("/artists", ArtistController.getAll);
+router.get("/artist/:id", ArtistController.getById);
 
 module.exports = router;
